@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Killua AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF3FF; --bg2:#D6E8FD; --ink:#1E3A5F; --muted:#5B7799;
+  --accent:#7FB2F0; --accent-d:#4F8FD8; --card:#FFFFFF; --line:#C5DBF5;
+  --head:'Plus Jakarta Sans','Segoe UI',sans-serif; --body:'Plus Jakarta Sans','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:radial-gradient(circle at 15% 0%,#F6FAFF 0,var(--bg) 45%,var(--bg2) 100%);min-height:100vh;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:800;font-size:1.25rem}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#B9D8FA);display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:0 6px 16px rgba(79,143,216,.35)}
+.pill{font-size:.85rem;font-weight:700;background:var(--card);border:1px solid var(--line);padding:6px 14px;border-radius:999px;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center;padding:24px 0 56px}
+h1{font-family:var(--head);font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.08;font-weight:800;letter-spacing:-.02em}
+.lead{margin:18px 0 26px;font-size:1.08rem;color:var(--muted);max-width:44ch}
+.btn{display:inline-block;border:0;cursor:pointer;font-family:var(--head);font-weight:700;font-size:.95rem;background:var(--accent-d);color:#fff;padding:13px 24px;border-radius:14px;text-decoration:none;box-shadow:0 8px 20px rgba(79,143,216,.35);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,input:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid #1E3A5F;outline-offset:2px}
+.chat{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 60px rgba(79,143,216,.25);overflow:hidden;display:flex;flex-direction:column;height:520px}
+.chat-top{display:flex;align-items:center;gap:10px;padding:14px 18px;background:linear-gradient(135deg,#DCEBFD,#EEF5FF);border-bottom:1px solid var(--line)}
+.dot{width:10px;height:10px;border-radius:50%;background:#6CCB9B}
+.chat-top b{font-family:var(--head)}
+.chat-top small{margin-left:auto;color:var(--muted);font-size:.8rem}
+#log{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px;background:#FBFDFF}
+.msg{max-width:82%;padding:10px 14px;border-radius:18px;white-space:pre-wrap;word-wrap:break-word;font-size:.97rem}
+.bot{background:var(--bg);color:#1E3A5F;align-self:flex-start;border-bottom-left-radius:6px}
+.me{background:var(--accent-d);color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
+.typing{opacity:.7;font-style:italic}
+details{border-top:1px solid var(--line);background:#F4F9FF;padding:8px 18px;font-size:.85rem}
+summary{cursor:pointer;font-weight:700;color:var(--muted);padding:4px 0}
+details p{color:var(--muted);margin:6px 0}
+details input{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-family:var(--body);margin-bottom:6px}
+.send{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line);background:var(--card)}
+.send input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-family:var(--body);font-size:1rem;background:#F7FBFF;color:#1E3A5F;-webkit-text-fill-color:#1E3A5F;caret-color:#1E3A5F}
+.send input::placeholder{color:#7F96B3;-webkit-text-fill-color:#7F96B3;opacity:1}
+.send button{padding:0 20px;border-radius:14px}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-bottom:56px}
+.feat div{background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:20px;padding:22px}
+.feat h3{font-family:var(--head);font-size:1.05rem;margin-bottom:6px}
+.feat p{color:var(--muted);font-size:.95rem}
+footer{border-top:1px solid var(--line);padding:24px 0 36px;text-align:center;color:var(--muted)}
+footer b{color:var(--ink);font-family:var(--head)}
+.about{display:flex;gap:22px;align-items:center;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:26px;padding:28px;margin-bottom:48px}
+.avatar{flex:none;width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#B9D8FA);display:grid;place-items:center;color:#fff;font-family:var(--head);font-weight:800;font-size:2.4rem;box-shadow:0 10px 24px rgba(79,143,216,.35)}
+.about h2,.faq h2{font-family:var(--head);font-size:1.4rem;margin-bottom:8px}
+.about p{color:var(--muted);max-width:60ch}
+.faq{padding-bottom:56px;max-width:720px}
+.faq h2{margin-bottom:14px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px 18px;margin-bottom:10px;font-size:1rem}
+.faq summary{color:var(--ink);font-family:var(--head);font-weight:700;font-size:.98rem;padding:12px 0}
+.faq details p{color:var(--muted);margin:0 0 14px}
+.wrap{position:relative;z-index:1}
+.deco{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.deco span{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,rgba(127,178,240,.38));opacity:.65;animation:drift 9s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.clear{margin-left:10px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-family:var(--body);font-weight:700;font-size:.78rem;padding:5px 11px;border-radius:999px;cursor:pointer}
+.chips{display:flex;gap:8px;padding:10px 14px 0;overflow-x:auto;background:var(--card);border-top:1px solid var(--line)}
+.chips+.send{border-top:0}
+.chip{flex:none;border:1px solid var(--line);background:var(--bg);color:#1E3A5F;font-family:var(--body);font-weight:700;font-size:.85rem;padding:7px 13px;border-radius:999px;cursor:pointer}
+.chip:hover,.clear:hover{background:var(--bg2)}
+.chip:focus-visible,.clear:focus-visible{outline:3px solid #1E3A5F;outline-offset:2px}
+.can h2,.demo h2{font-family:var(--head);font-size:1.4rem;margin-bottom:14px}
+.can,.demo{padding-bottom:48px}
+.can-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.can-grid div{background:var(--bg2);border-radius:18px;padding:18px}
+.can-grid h3{font-family:var(--head);font-size:1rem;margin-bottom:4px}
+.can-grid p{color:var(--muted);font-size:.92rem}
+.demo-box{display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;max-width:720px}
+.demo-box .me{align-self:flex-end}
+.demo-box .try{margin-top:6px}
+body{background:radial-gradient(circle at 8% 0%,rgba(255,205,235,.7),transparent 38%),radial-gradient(circle at 92% 12%,rgba(190,175,255,.55),transparent 40%),radial-gradient(circle at 85% 95%,rgba(160,240,220,.55),transparent 38%),linear-gradient(160deg,#F4F9FF,#D9E9FC);background-attachment:fixed}
+.logo,.avatar{background:linear-gradient(135deg,#6FA8F0,#A58BF2 55%,#F59BCB)}
+.pill{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#7FB2F0,#B49CF5,#F5A8D2) border-box;border:1.5px solid transparent}
+h1{background:linear-gradient(120deg,#3B7BCC,#7A6BE8 55%,#D96BB0);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.btn{background:linear-gradient(135deg,#3E7FCB,#7A6BE8);box-shadow:0 8px 22px rgba(122,107,232,.4)}
+.btn:hover{box-shadow:0 12px 30px rgba(122,107,232,.55)}
+.chat{box-shadow:0 26px 70px rgba(122,107,232,.28),0 0 0 6px rgba(255,255,255,.45)}
+.chat-top{background:linear-gradient(120deg,#D9E9FD,#E8DEFF 55%,#FFE1F0)}
+.me{background:linear-gradient(135deg,#3E7FCB,#7A6BE8)}
+.bot{background:linear-gradient(135deg,#EAF3FF,#F1EAFF)}
+.feat div,.about,.demo-box,.faq details{background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-color:rgba(255,255,255,.9);box-shadow:0 8px 28px rgba(122,107,232,.12)}
+.can-grid div{box-shadow:0 6px 18px rgba(122,107,232,.1)}
+.can-grid div:nth-child(1){background:#DCEBFD}
+.can-grid div:nth-child(2){background:#E3F7EF}
+.can-grid div:nth-child(3){background:#FFE6F2}
+.can-grid div:nth-child(4){background:#ECE4FF}
+.chip:nth-child(1){background:#DCEBFD}
+.chip:nth-child(2){background:#ECE4FF}
+.chip:nth-child(3){background:#FFE6F2}
+.chip:nth-child(4){background:#E3F7EF}
+.chip:hover{filter:brightness(.95)}
+.deco span:nth-child(2){background:radial-gradient(circle at 30% 30%,#fff,rgba(255,170,220,.55))}
+.deco span:nth-child(3){background:radial-gradient(circle at 30% 30%,#fff,rgba(190,170,255,.55))}
+.deco span:nth-child(4){background:radial-gradient(circle at 30% 30%,#fff,rgba(150,235,210,.55))}
+.deco i{position:absolute;font-style:normal;color:#A99BF5;text-shadow:0 0 10px rgba(169,155,245,.9);animation:twinkle 3.5s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.typing.live{opacity:1;font-style:normal}
+.copy{display:block;margin-top:8px;border:1px solid var(--line);background:rgba(255,255,255,.85);color:var(--muted);font-family:var(--body);font-weight:700;font-size:.75rem;padding:3px 10px;border-radius:999px;cursor:pointer}
+.copy:hover{background:#fff}
+.copy:focus-visible{outline:3px solid #1E3A5F;outline-offset:2px}
+:root{--bg:#FFF1F0;--bg2:#FFDDDD;--ink:#4A1F26;--muted:#8A5A60;--accent:#F0A0A5;--accent-d:#C93C4A;--card:#FFFFFF;--line:#F6CFD1}
+body{background:radial-gradient(circle at 8% 0%,rgba(255,200,205,.6),transparent 40%),radial-gradient(circle at 92% 12%,rgba(255,225,215,.7),transparent 42%),radial-gradient(circle at 85% 95%,rgba(255,190,200,.45),transparent 40%),linear-gradient(160deg,#FFFBFA,#FFE9E7);background-attachment:fixed}
+.logo,.avatar{background:linear-gradient(135deg,#F4989E,#D9525E);box-shadow:0 8px 20px rgba(201,60,74,.3)}
+.pill{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#F4A0A6,#E56B74,#F7C0C3) border-box}
+h1{background:linear-gradient(120deg,#B8323F,#D9525E 55%,#EE8088);-webkit-background-clip:text;background-clip:text}
+.btn{background:linear-gradient(135deg,#C93C4A,#DE5F69);box-shadow:0 8px 22px rgba(201,60,74,.32)}
+.btn:hover{box-shadow:0 12px 30px rgba(201,60,74,.45)}
+.btn:focus-visible,input:focus-visible,summary:focus-visible,textarea:focus-visible,.chip:focus-visible,.clear:focus-visible,.copy:focus-visible{outline-color:#4A1F26}
+.chat{box-shadow:0 26px 70px rgba(201,60,74,.2),0 0 0 6px rgba(255,255,255,.55)}
+.chat-top{background:linear-gradient(120deg,#FFE3E3,#FFF0EE 55%,#FFFFFF)}
+#log{background:#FFFCFB}
+.me{background:linear-gradient(135deg,#C0394A,#D9525E)}
+.bot{background:linear-gradient(135deg,#FFF1F0,#FFE8E6);color:#4A1F26}
+.send input{background:#FFF9F8;color:#4A1F26;-webkit-text-fill-color:#4A1F26;caret-color:#4A1F26}
+.send input::placeholder{color:#A07C80;-webkit-text-fill-color:#A07C80;opacity:1}
+.chip{color:#4A1F26}
+.chip:nth-child(1){background:#FFE3E3}
+.chip:nth-child(2){background:#FFECE6}
+.chip:nth-child(3){background:#FFE0E8}
+.chip:nth-child(4){background:#FFF1F0}
+.can-grid div:nth-child(1){background:#FFE3E3}
+.can-grid div:nth-child(2){background:#FFEBDD}
+.can-grid div:nth-child(3){background:#FFDDE6}
+.can-grid div:nth-child(4){background:#FFF0EE}
+.feat div,.about,.demo-box,.faq details{box-shadow:0 8px 28px rgba(201,60,74,.1)}
+.can-grid div{box-shadow:0 6px 18px rgba(201,60,74,.08)}
+.deco span{background:radial-gradient(circle at 30% 30%,#fff,rgba(240,140,150,.38))}
+.deco span:nth-child(2){background:radial-gradient(circle at 30% 30%,#fff,rgba(255,170,180,.5))}
+.deco span:nth-child(3){background:radial-gradient(circle at 30% 30%,#fff,rgba(255,200,170,.5))}
+.deco span:nth-child(4){background:radial-gradient(circle at 30% 30%,#fff,rgba(240,120,135,.35))}
+.deco i{color:#E9808A;text-shadow:0 0 10px rgba(233,128,138,.8)}
+.wrap{max-width:1180px}
+.hero{grid-template-columns:.85fr 1.25fr;gap:44px}
+.chat{height:min(80vh,720px);min-height:560px}
+.msg{font-size:1.02rem;max-width:88%}
+.send input{padding:15px 16px}
+.chat-top{padding:16px 20px}
+#log{padding:22px;gap:12px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}.chat{height:min(82vh,680px);min-height:520px}}
+.hero{grid-template-columns:1fr;gap:28px;padding-bottom:48px}
+.hero>div:first-child{text-align:center}
+.hero .lead{margin-left:auto;margin-right:auto;max-width:56ch}
+.chat{width:100%;height:min(88vh,860px);min-height:640px}
+.msg{max-width:min(88%,760px)}
+@media(max-width:820px){.wrap{padding:0 12px}.chat{height:min(88vh,780px);min-height:600px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.deco span,.deco i{animation:none}}
+@media(max-width:820px){.hero{grid-template-columns:1fr}.feat{grid-template-columns:1fr}.chat{height:480px}.about{flex-direction:column;text-align:center}.can-grid{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="deco" aria-hidden="true"><span style="width:220px;height:220px;left:-60px;top:12%"></span><span style="width:120px;height:120px;right:6%;top:6%;animation-delay:-3s"></span><span style="width:160px;height:160px;right:-40px;top:48%"></span><span style="width:90px;height:90px;left:8%;bottom:14%;animation-delay:-5s"></span><span style="width:140px;height:140px;left:46%;bottom:-40px"></span><i style="left:11%;top:18%;font-size:20px">✦</i><i style="left:38%;top:7%;font-size:14px;animation-delay:-1.2s">✦</i><i style="right:14%;top:34%;font-size:22px;animation-delay:-2.1s">✦</i><i style="left:6%;top:62%;font-size:16px;animation-delay:-0.6s">✦</i><i style="right:30%;bottom:12%;font-size:18px;animation-delay:-2.8s">✦</i></div>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="logo">K</span>Killua AI</div>
+    <span class="pill">Developer: Kyren</span>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Ngobrol santai dengan Killua AI</h1>
+      <p class="lead">Tanya apa saja, minta ide, bantu tugas, atau sekadar teman ngobrol. Killua AI menjawab cepat dengan gaya yang ramah.</p>
+      <a class="btn" href="#chat" onclick="document.getElementById('msg').focus()">Mulai ngobrol</a>
+    </div>
+
+    <div class="chat" id="chat">
+      <div class="chat-top"><span class="dot"></span><b>Killua AI</b><small>online</small><button type="button" class="clear" id="clear">Bersihkan chat</button></div>
+      <div id="log">
+        <div class="msg bot">Halo, aku Killua AI. Ada yang bisa kubantu hari ini?</div>
+      </div>
+      <div class="chips" id="chips">
+        <button type="button" class="chip" data-q="Buatkan 3 caption singkat untuk foto pantai saat senja">Buat caption</button>
+        <button type="button" class="chip" data-q="Jelaskan apa itu vibe coding dengan bahasa sederhana">Apa itu vibe coding?</button>
+        <button type="button" class="chip" data-q="Beri aku 5 ide konten untuk media sosial">Ide konten</button>
+        <button type="button" class="chip" data-q="Terjemahkan ke bahasa Inggris: selamat pagi, semoga harimu menyenangkan">Terjemahkan</button>
+      </div>
+      <form class="send" id="form">
+        <input id="msg" type="text" placeholder="Tulis pesan..." autocomplete="off" aria-label="Pesan">
+        <button class="btn" type="submit">Kirim</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div><h3>Jawaban cepat</h3><p>Dapat respons dalam hitungan detik, tanpa perlu daftar akun di website ini.</p></div>
+    <div><h3>Gaya ramah</h3><p>Killua AI menjawab dalam bahasa yang santai dan mudah dipahami.</p></div>
+    <div><h3>Gratis dipakai</h3><p>Dijalankan dengan API gratis, jadi kamu bisa mencoba sepuasnya.</p></div>
+  </section>
+
+  <section class="can">
+    <h2>Apa yang bisa Killua AI lakukan</h2>
+    <div class="can-grid">
+      <div><h3>Bantu tugas</h3><p>Jelaskan materi, ringkas teks, atau cek jawaban latihan.</p></div>
+      <div><h3>Terjemahan</h3><p>Ubah teks ke bahasa lain dengan gaya yang natural.</p></div>
+      <div><h3>Ide kreatif</h3><p>Caption, nama, cerita, atau ide konten untuk media sosial.</p></div>
+      <div><h3>Coding</h3><p>Jelaskan kode, cari bug, atau bantu bikin skrip kecil.</p></div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <h2>Contoh percakapan</h2>
+    <div class="demo-box">
+      <div class="msg me">Buatkan 3 caption singkat untuk foto pantai saat senja</div>
+      <div class="msg bot">Ini tiga ide caption:
+1. Sore itu, ombak pelan-pelan bilang: istirahat dulu ya. 🌅
+2. Langit lagi pamer warna, aku cuma jadi penonton. 🌊
+3. Pantai, senja, dan kepala yang akhirnya tenang.</div>
+      <button class="btn try" type="button" data-q="Buatkan 3 caption singkat untuk foto pantai saat senja">Coba pertanyaan ini</button>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="avatar" aria-hidden="true">K</div>
+    <div>
+      <h2>Tentang developer</h2>
+      <p>Kyren adalah seorang vibe coder yang suka mencoba hal baru. Killua AI lahir dari rasa penasaran itu: sebuah proyek untuk bereksperimen dan bersenang-senang, tanpa maksud lain selain ingin tahu apa saja yang bisa dibuat.</p>
+    </div>
+  </section>
+
+  <section class="faq">
+    <h2>Pertanyaan umum</h2>
+    <details><summary>Killua AI itu apa?</summary><p>Asisten AI yang bisa diajak ngobrol, ditanya, atau dimintai ide. Dibuat oleh Kyren sebagai proyek uji coba.</p></details>
+    <details><summary>Apakah gratis?</summary><p>Ya, kamu bisa memakainya tanpa biaya langsung dari halaman ini.</p></details>
+    <details><summary>Apakah percakapan saya disimpan?</summary><p>Website ini tidak menyimpan riwayat chat. Percakapan hilang saat halaman ditutup atau dimuat ulang.</p></details>
+    <details><summary>Apakah jawabannya selalu benar?</summary><p>Tidak selalu. Killua AI bisa keliru, jadi cek lagi untuk hal penting seperti kesehatan, uang, atau hukum.</p></details>
+    <details><summary>Bahasa apa yang didukung?</summary><p>Killua AI menjawab dalam bahasa yang kamu pakai, jadi kamu bisa menulis dalam bahasa Indonesia atau bahasa lain.</p></details>
+  </section>
+
+  <footer>Dibuat dengan penuh semangat oleh <b>Kyren</b> &copy; <span id="yr"></span> Killua AI</footer>
+</div>
+
+<script>
+// ====== PENGATURAN ======
+// ========================
+
+const log = document.getElementById('log');
+const form = document.getElementById('form');
+const input = document.getElementById('msg');
+const chatHistory = [];
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+function add(text, cls) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + cls;
+  d.textContent = text;
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+
+async function askAI(messages, onText) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages })
+  });
+  if (!res.ok) {
+    let m = 'Permintaan gagal (' + res.status + ')';
+    try { m = (await res.json()).error.message; } catch (e) {}
+    if (res.status === 404) m = 'Alamat /api/chat tidak ditemukan. Pastikan website dijalankan lewat server.js (node server.js), bukan hosting statis.';
+    throw new Error(m);
+  }
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '', full = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const l of lines) {
+      const t = l.trim();
+      if (!t.startsWith('data:')) continue;
+      const d = t.slice(5).trim();
+      if (d === '[DONE]') continue;
+      try {
+        const c = JSON.parse(d).choices?.[0]?.delta?.content;
+        if (c) { full += c; onText({ text: full }); }
+      } catch (e) {}
+    }
+  }
+  return { text: full };
+}
+
+function addCopy(el, text) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'copy';
+  b.textContent = 'Salin';
+  b.addEventListener('click', async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+      const t = document.createElement('textarea');
+      t.value = text;
+      document.body.appendChild(t);
+      t.select();
+      try { ok = document.execCommand('copy'); } catch (e2) {}
+      t.remove();
+    }
+    b.textContent = ok ? 'Tersalin' : 'Gagal menyalin';
+    setTimeout(() => { b.textContent = 'Salin'; }, 1500);
+  });
+  el.appendChild(b);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  add(text, 'me');
+  input.value = '';
+  chatHistory.push({ role: 'user', content: text });
+  const wait = add('Killua AI sedang mengetik...', 'bot typing');
+  try {
+    const recent = chatHistory.slice(-20).map(m => ({ role: m.role, content: m.content }));
+    const out = await askAI(recent, ({ text }) => {
+      if (!text || /^Thinking/.test(text)) return;
+      wait.className = 'msg bot typing live';
+      wait.textContent = text;
+      log.scrollTop = log.scrollHeight;
+    });
+    const reply = (out && out.text) || 'Maaf, aku tidak bisa menjawab itu.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    wait.className = 'msg bot';
+    wait.textContent = reply;
+    addCopy(wait, reply);
+  } catch (err) {
+    chatHistory.pop();
+    wait.className = 'msg bot';
+    wait.textContent = err && err.code === 'not_granted'
+      ? 'Izin AI belum diberikan. Kirim pesan lagi lalu setujui permintaannya.'
+      : 'Terjadi masalah: ' + ((err && err.message) || 'permintaan gagal');
+  }
+  log.scrollTop = log.scrollHeight;
+});
+
+document.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => {
+  if (log.querySelector('.typing')) return;
+  input.value = b.dataset.q;
+  if (b.classList.contains('try')) document.getElementById('chat').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  form.requestSubmit();
+}));
+
+document.querySelectorAll('.demo-box .bot').forEach(el => addCopy(el, el.textContent));
+
+document.getElementById('clear').addEventListener('click', () => {
+  if (log.querySelector('.typing')) return;
+  chatHistory.length = 0;
+  log.replaceChildren();
+  add('Halo, aku Killua AI. Ada yang bisa kubantu hari ini?', 'bot');
+});
+</script>
+</body>
+</html>
